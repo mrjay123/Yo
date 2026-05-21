@@ -29,9 +29,9 @@
         }
     </style>
 </head>
-<body class="flex items-center justify-center min-h-screen p-4 antialiased">
+<body class="flex items-center justify-center min-h-screen p-4 sm:p-6 antialiased">
 
-    <div class="max-w-[420px] w-full glass-card rounded-2xl shadow-[0_25px_50px_-12px_rgba(0,0,0,0.5)] overflow-hidden slide-up relative">
+    <div class="max-w-[420px] md:max-w-[760px] w-full glass-card rounded-2xl shadow-[0_25px_50px_-12px_rgba(0,0,0,0.5)] overflow-hidden slide-up relative">
         
         <div id="paymentScreen" class="block">
             <div class="bg-gradient-to-br from-[#0f172a] via-[#1e293b] to-[#0f172a] text-white p-6 relative overflow-hidden">
@@ -55,40 +55,52 @@
                 <div class="absolute -bottom-1 left-0 w-full h-4 bg-white rounded-t-2xl"></div>
             </div>
 
-            <div class="p-6 pt-3">
-                <h3 class="text-xs font-bold text-slate-500 uppercase tracking-widest mb-4 flex items-center gap-2">
-                    <span class="w-5 h-5 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center font-bold text-[10px]">01</span>
-                    Scan QR Code via any UPI App
-                </h3>
+            <div class="p-6 pt-3 flex flex-col md:flex-row gap-6">
+                
+                <div class="flex-1 flex flex-col justify-between">
+                    <div>
+                        <h3 class="text-xs font-bold text-slate-500 uppercase tracking-widest mb-4 flex items-center gap-2">
+                            <span class="w-5 h-5 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center font-bold text-[10px]">01</span>
+                            Scan QR Code via any UPI App
+                        </h3>
 
-                <div class="border border-slate-100 bg-slate-50/70 rounded-2xl p-6 flex flex-col items-center mb-6 shadow-sm ring-1 ring-black/[0.02]">
-                    <div class="bg-white p-4 rounded-xl shadow-md border border-slate-100 transition-transform hover:scale-[1.02] duration-300 mb-4">
-                        <img id="qrCodeImg" src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=upi%3A%2F%2Fpay%3Fpa%3Dpaytmqrpmivwx2rxg%40paytm%26pn%3DJAYADEEP%2520KHETRI%26am%3D1.00%26cu%3DINR" alt="UPI QR Code" class="h-48 w-48">
-                    </div>
-                    
-                    <button id="downloadQrBtn" class="flex items-center gap-2 text-xs font-bold text-blue-600 hover:text-blue-700 bg-blue-50 hover:bg-blue-100/80 px-4 py-2 rounded-lg transition-colors border border-blue-100 mb-2">
-                        <i class="fas fa-arrow-down-to-line"></i> Download QR Code
-                    </button>
-                </div>
-
-                <h3 class="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3 flex items-center gap-2">
-                    <span class="w-5 h-5 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center font-bold text-[10px]">02</span>
-                    Verification Details
-                </h3>
-
-                <div class="mb-5">
-                    <label class="block text-slate-600 text-[11px] font-bold uppercase tracking-wider mb-2">Transaction UTR / Ref No.</label>
-                    <div class="relative group">
-                        <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400 group-focus-within:text-blue-500 transition-colors">
-                            <i class="fas fa-receipt text-sm"></i>
+                        <div class="border border-slate-100 bg-slate-50/70 rounded-2xl p-6 flex flex-col items-center shadow-sm ring-1 ring-black/[0.02]">
+                            <div class="bg-white p-4 rounded-xl shadow-md border border-slate-100 transition-transform hover:scale-[1.02] duration-300 mb-4">
+                                <img id="qrCodeImg" src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=upi%3A%2F%2Fpay%3Fpa%3Dpaytmqrpmivwx2rxg%40paytm%26pn%3DJAYADEEP%2520KHETRI%26am%3D1.00%26cu%3DINR" alt="UPI QR Code" class="h-44 w-44 md:h-48 md:w-48">
+                            </div>
+                            
+                            <button id="downloadQrBtn" class="flex items-center gap-2 text-xs font-bold text-blue-600 hover:text-blue-700 bg-blue-50 hover:bg-blue-100/80 px-4 py-2 rounded-lg transition-colors border border-blue-100">
+                                <i class="fas fa-arrow-down-to-line"></i> Download QR Code
+                            </button>
                         </div>
-                        <input type="text" id="utrInput" placeholder="Enter 12 digit UTR Number" maxlength="12" class="w-full bg-white border border-slate-200 pl-10 pr-4 py-3 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition text-sm font-mono tracking-widest font-semibold placeholder:text-slate-400 placeholder:font-sans placeholder:tracking-normal shadow-xs">
                     </div>
                 </div>
 
-                <button id="submitBtn" class="w-full glow-button text-white font-semibold py-3.5 px-4 rounded-xl transition duration-300 flex items-center justify-center gap-2 shadow-lg text-sm tracking-wide">
-                    <i class="fas fa-shield-check opacity-80"></i> Verify & Instant Unlock
-                </button>
+                <div class="flex-1 flex flex-col justify-between border-t border-slate-100 pt-5 md:pt-0 md:border-t-0 md:border-l md:pl-6">
+                    <div>
+                        <h3 class="text-xs font-bold text-slate-500 uppercase tracking-widest mb-4 flex items-center gap-2">
+                            <span class="w-5 h-5 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center font-bold text-[10px]">02</span>
+                            Verification Details
+                        </h3>
+
+                        <div class="mb-5">
+                            <label class="block text-slate-600 text-[11px] font-bold uppercase tracking-wider mb-2">Transaction UTR / Ref No.</label>
+                            <div class="relative group">
+                                <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400 group-focus-within:text-blue-500 transition-colors">
+                                    <i class="fas fa-receipt text-sm"></i>
+                                </div>
+                                <input type="text" id="utrInput" placeholder="Enter 12 digit UTR Number" maxlength="12" class="w-full bg-white border border-slate-200 pl-10 pr-4 py-3 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition text-sm font-mono tracking-widest font-semibold placeholder:text-slate-400 placeholder:font-sans placeholder:tracking-normal shadow-xs">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-2 md:mt-8">
+                        <button id="submitBtn" class="w-full glow-button text-white font-semibold py-3.5 px-4 rounded-xl transition duration-300 flex items-center justify-center gap-2 shadow-lg text-sm tracking-wide">
+                            <i class="fas fa-shield-check opacity-80"></i> Verify & Instant Unlock
+                        </button>
+                    </div>
+                </div>
+
             </div>
             
             <div class="bg-slate-50 p-3.5 text-center border-t border-slate-100 flex items-center justify-center gap-2">
@@ -110,6 +122,168 @@
                 <p class="text-slate-500 text-xs mb-6 px-4 leading-relaxed">Matching transaction telemetry with secure banking node relays. Do not refresh.</p>
                 <div class="bg-slate-50 border border-slate-100 py-3 px-6 rounded-2xl inline-flex items-center gap-2 shadow-xs">
                     <i class="fas fa-stopwatch text-blue-500 animate-pulse"></i>
+                    <span class="text-slate-800 font-mono font-bold text-xl tracking-widest" id="timerText">02:00</span>
+                </div>
+            </div>
+
+            <div id="successState" class="hidden w-full slide-up">
+                <div class="mx-auto flex items-center justify-center h-20 w-20 rounded-full bg-emerald-50 mb-5 border-4 border-white shadow-xl relative">
+                    <div class="absolute inset-0 bg-emerald-400/20 rounded-full animate-ping" style="animation-duration: 2s;"></div>
+                    <i class="fas fa-circle-check text-4xl text-emerald-500 relative z-10"></i>
+                </div>
+                <h2 class="text-2xl font-extrabold text-slate-900 mb-2 tracking-tight">Payment Verified</h2>
+                <p class="text-slate-500 text-xs mb-6 px-4">Cryptographic receipt cleared. Your file asset is now authorized for download.</p>
+                
+                <a id="downloadLink" href="https://google.com/file.zip" target="_blank" class="w-full bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white font-semibold py-3.5 px-4 rounded-xl transition duration-200 flex items-center justify-center gap-2 shadow-lg shadow-emerald-500/20 text-sm tracking-wide">
+                    <i class="fas fa-cloud-arrow-down text-base"></i> Download File Asset
+                </a>
+            </div>
+
+            <div id="failedState" class="hidden w-full slide-up">
+                <div class="mx-auto flex items-center justify-center h-20 w-20 rounded-full bg-rose-50 mb-5 border-4 border-white shadow-xl">
+                    <i class="fas fa-circle-exclamation text-4xl text-rose-500"></i>
+                </div>
+                <h2 class="text-xl font-extrabold text-slate-900 mb-2 tracking-tight">Validation Failed</h2>
+                <p class="text-slate-500 text-xs mb-6 px-4 leading-relaxed">Network timeout or invalid UTR signature registry. Check details and resubmit.</p>
+                <button onclick="location.reload()" class="w-full bg-slate-900 hover:bg-black text-white font-semibold py-3.5 px-4 rounded-xl transition duration-200 text-sm tracking-wide shadow-md">
+                    <i class="fas fa-rotate-left mr-1.5 opacity-80"></i> Restart Verification
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-analytics.js";
+        import { getFirestore, collection, addDoc, onSnapshot, doc, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyADQ5Z6DoFn24FQFkdPuSBLVvryxnFnJ_E",
+            authDomain: "paymentupi-b296e.firebaseapp.com",
+            projectId: "paymentupi-b296e",
+            storageBucket: "paymentupi-b296e.firebasestorage.app",
+            messagingSenderId: "771713136159",
+            appId: "1:771713136159:web:4f7e6cdc4d4139c564872a",
+            measurementId: "G-627F28W2HT"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+        const db = getFirestore(app);
+
+        let timerInterval;
+        let unsubscribeFirestore = null;
+
+        // QR CODE DOWNLOAD IMAGE FUNCTION
+        document.getElementById('downloadQrBtn').addEventListener('click', async () => {
+            const qrImgSrc = document.getElementById('qrCodeImg').src;
+            try {
+                const response = await fetch(qrImgSrc);
+                const blob = await response.blob();
+                const blobUrl = URL.createObjectURL(blob);
+                
+                const link = document.createElement('a');
+                link.href = blobUrl;
+                link.download = 'Paytm_Payment_QR.png';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                URL.revokeObjectURL(blobUrl);
+            } catch (error) {
+                window.open(qrImgSrc, '_blank');
+            }
+        });
+
+        window.showScreen = function(screenId) {
+            document.getElementById('paymentScreen').style.display = 'none';
+            const target = document.getElementById(screenId);
+            target.classList.remove('hidden');
+            target.classList.add('flex'); 
+        };
+
+        document.getElementById('submitBtn').addEventListener('click', async () => {
+            const utr = document.getElementById('utrInput').value.trim();
+            if(utr === "" || utr.length < 8) {
+                alert("Please enter a valid Transaction UTR / Ref Number.");
+                return;
+            }
+
+            const btn = document.getElementById('submitBtn');
+            btn.innerHTML = "<i class='fas fa-circle-notch fa-spin'></i> Cryptographic Audit...";
+            btn.disabled = true;
+
+            try {
+                const duplicateQuery = query(collection(db, "purchases"), where("utr", "==", utr));
+                const querySnapshot = await getDocs(duplicateQuery);
+                
+                if (!querySnapshot.empty) {
+                    alert("🚨 Security Block: This UTR has already been used to unlock a file! Duplicate requests are strictly prohibited.");
+                    btn.innerHTML = "<i class='fas fa-shield-check opacity-80'></i> Verify & Instant Unlock";
+                    btn.disabled = false;
+                    return;
+                }
+
+                btn.innerHTML = "<i class='fas fa-circle-notch fa-spin'></i> Opening Secure Handshake...";
+
+                const docRef = await addDoc(collection(db, "purchases"), {
+                    utr: utr,
+                    status: "pending",
+                    timestamp: new Date()
+                });
+
+                showScreen('processingScreen');
+                startTimer(120); 
+
+                unsubscribeFirestore = onSnapshot(doc(db, "purchases", docRef.id), (docSnap) => {
+                    if (docSnap.exists() && docSnap.data().status === "approved") {
+                        clearInterval(timerInterval);
+                        if (unsubscribeFirestore) unsubscribeFirestore();
+                        showSuccess();
+                    }
+                });
+
+            } catch (error) {
+                console.error("Database Error: ", error);
+                alert("Database Connection error. Please verify your Cloud Firestore Security Rules.");
+                btn.innerHTML = "<i class='fas fa-shield-check opacity-80'></i> Verify & Instant Unlock";
+                btn.disabled = false;
+            }
+        });
+
+        function startTimer(duration) {
+            let timer = duration, minutes, seconds;
+            timerInterval = setInterval(function () {
+                minutes = parseInt(timer / 60, 10);
+                seconds = parseInt(timer % 60, 10);
+
+                minutes = minutes < 10 ? "0" + minutes : minutes;
+                seconds = seconds < 10 ? "0" + seconds : seconds;
+
+                document.getElementById('timerText').textContent = minutes + ":" + seconds;
+
+                if (--timer < 0) {
+                    clearInterval(timerInterval);
+                    if (unsubscribeFirestore) unsubscribeFirestore(); 
+                    showFailed();
+                }
+            }, 1000);
+        }
+
+        function showSuccess() {
+            document.getElementById('loadingState').style.display = 'none';
+            document.getElementById('failedState').classList.add('hidden'); 
+            document.getElementById('successState').classList.remove('hidden');
+        }
+
+        function showFailed() {
+            document.getElementById('loadingState').style.display = 'none';
+            document.getElementById('successState').classList.add('hidden'); 
+            document.getElementById('failedState').classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>
                     <span class="text-slate-800 font-mono font-bold text-xl tracking-widest" id="timerText">02:00</span>
                 </div>
             </div>
