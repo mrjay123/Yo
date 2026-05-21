@@ -27,13 +27,6 @@
             transform: translateY(-2px);
             box-shadow: 0 10px 20px rgba(15, 23, 42, 0.2);
         }
-        
-        .app-btn {
-            transition: all 0.2s ease;
-        }
-        .app-btn:hover {
-            transform: scale(1.03);
-        }
     </style>
 </head>
 <body class="flex items-center justify-center min-h-screen p-4 antialiased">
@@ -65,34 +58,17 @@
             <div class="p-6 pt-3">
                 <h3 class="text-xs font-bold text-slate-500 uppercase tracking-widest mb-4 flex items-center gap-2">
                     <span class="w-5 h-5 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center font-bold text-[10px]">01</span>
-                    Scan QR or Pay via Mobile Apps
+                    Scan QR Code via any UPI App
                 </h3>
 
-                <div class="border border-slate-100 bg-slate-50/70 rounded-2xl p-5 flex flex-col items-center mb-6 shadow-sm ring-1 ring-black/[0.02]">
-                    <div class="bg-white p-3 rounded-xl shadow-md border border-slate-100 transition-transform hover:scale-[1.02] duration-300 mb-4">
-                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=upi%3A%2F%2Fpay%3Fpa%3Dpaytmqrpmivwx2rxg%40paytm%26pn%3DJAYADEEP%2520KHETRI%26am%3D1.00%26cu%3DINR" alt="UPI QR Code" class="h-36 w-36">
+                <div class="border border-slate-100 bg-slate-50/70 rounded-2xl p-6 flex flex-col items-center mb-6 shadow-sm ring-1 ring-black/[0.02]">
+                    <div class="bg-white p-4 rounded-xl shadow-md border border-slate-100 transition-transform hover:scale-[1.02] duration-300 mb-4">
+                        <img id="qrCodeImg" src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=upi%3A%2F%2Fpay%3Fpa%3Dpaytmqrpmivwx2rxg%40paytm%26pn%3DJAYADEEP%2520KHETRI%26am%3D1.00%26cu%3DINR" alt="UPI QR Code" class="h-48 w-48">
                     </div>
                     
-                    <div class="w-full flex items-center gap-2 my-3">
-                        <div class="h-px bg-slate-200 flex-1"></div>
-                        <span class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Click to Pay Directly</span>
-                        <div class="h-px bg-slate-200 flex-1"></div>
-                    </div>
-                    
-                    <div class="grid grid-cols-3 gap-2.5 w-full">
-                        <button onclick="payViaApp('gpay')" class="app-btn bg-white border border-slate-200/80 p-2 rounded-xl flex flex-col items-center justify-center shadow-sm">
-                            <span class="font-bold text-[13px] tracking-tight mb-0.5"><span class="text-blue-500">G</span><span class="text-red-500">P</span><span class="text-amber-500">a</span><span class="text-green-500">y</span></span>
-                            <span class="text-[9px] text-slate-400 font-medium">Pay Direct</span>
-                        </button>
-                        <button onclick="payViaApp('phonepe')" class="app-btn bg-[#5f259f] p-2 rounded-xl flex flex-col items-center justify-center shadow-sm">
-                            <span class="font-extrabold text-[13px] text-white tracking-tight mb-0.5">पे</span>
-                            <span class="text-[9px] text-purple-200 font-medium">Pay Direct</span>
-                        </button>
-                        <button onclick="payViaApp('paytm')" class="app-btn bg-white border border-slate-200/80 p-2 rounded-xl flex flex-col items-center justify-center shadow-sm">
-                            <span class="font-bold text-[13px] tracking-tight mb-0.5"><span class="text-[#002970]">Pay</span><span class="text-[#00baf2]">tm</span></span>
-                            <span class="text-[9px] text-slate-400 font-medium">Pay Direct</span>
-                        </button>
-                    </div>
+                    <button id="downloadQrBtn" class="flex items-center gap-2 text-xs font-bold text-blue-600 hover:text-blue-700 bg-blue-50 hover:bg-blue-100/80 px-4 py-2 rounded-lg transition-colors border border-blue-100 mb-2">
+                        <i class="fas fa-arrow-down-to-line"></i> Download QR Code
+                    </button>
                 </div>
 
                 <h3 class="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3 flex items-center gap-2">
@@ -110,6 +86,193 @@
                     </div>
                 </div>
 
+                <button id="submitBtn" class="w-full glow-button text-white font-semibold py-3.5 px-4 rounded-xl transition duration-300 flex items-center justify-center gap-2 shadow-lg text-sm tracking-wide">
+                    <i class="fas fa-shield-check opacity-80"></i> Verify & Instant Unlock
+                </button>
+            </div>
+            
+            <div class="bg-slate-50 p-3.5 text-center border-t border-slate-100 flex items-center justify-center gap-2">
+                <i class="fas fa-lock-keyhole text-slate-400 text-xs"></i>
+                <span class="text-[9px] text-slate-500 font-bold uppercase tracking-widest">End-to-End Encrypted Protocols</span>
+            </div>
+        </div>
+
+        <div id="processingScreen" class="hidden p-8 text-center min-h-[440px] flex-col justify-center items-center bg-white">
+            
+            <div id="loadingState" class="block w-full">
+                <div class="relative w-20 h-20 mx-auto mb-6">
+                    <div class="absolute inset-0 border-4 border-slate-100 rounded-full"></div>
+                    <div class="absolute inset-0 border-4 border-blue-600 rounded-full border-t-transparent animate-spin"></div>
+                    <div class="absolute inset-2 border-4 border-blue-100 rounded-full border-b-transparent animate-spin" style="animation-direction: reverse; animation-duration: 1s;"></div>
+                    <i class="fas fa-vault absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-blue-600 text-2xl"></i>
+                </div>
+                <h2 class="text-xl font-extrabold text-slate-900 mb-2 tracking-tight">Securing Connection</h2>
+                <p class="text-slate-500 text-xs mb-6 px-4 leading-relaxed">Matching transaction telemetry with secure banking node relays. Do not refresh.</p>
+                <div class="bg-slate-50 border border-slate-100 py-3 px-6 rounded-2xl inline-flex items-center gap-2 shadow-xs">
+                    <i class="fas fa-stopwatch text-blue-500 animate-pulse"></i>
+                    <span class="text-slate-800 font-mono font-bold text-xl tracking-widest" id="timerText">02:00</span>
+                </div>
+            </div>
+
+            <div id="successState" class="hidden w-full slide-up">
+                <div class="mx-auto flex items-center justify-center h-20 w-20 rounded-full bg-emerald-50 mb-5 border-4 border-white shadow-xl relative">
+                    <div class="absolute inset-0 bg-emerald-400/20 rounded-full animate-ping" style="animation-duration: 2s;"></div>
+                    <i class="fas fa-circle-check text-4xl text-emerald-500 relative z-10"></i>
+                </div>
+                <h2 class="text-2xl font-extrabold text-slate-900 mb-2 tracking-tight">Payment Verified</h2>
+                <p class="text-slate-500 text-xs mb-6 px-4">Cryptographic receipt cleared. Your file asset is now authorized for download.</p>
+                
+                <a id="downloadLink" href="https://google.com/file.zip" target="_blank" class="w-full bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white font-semibold py-3.5 px-4 rounded-xl transition duration-200 flex items-center justify-center gap-2 shadow-lg shadow-emerald-500/20 text-sm tracking-wide">
+                    <i class="fas fa-cloud-arrow-down text-base"></i> Download File Asset
+                </a>
+            </div>
+
+            <div id="failedState" class="hidden w-full slide-up">
+                <div class="mx-auto flex items-center justify-center h-20 w-20 rounded-full bg-rose-50 mb-5 border-4 border-white shadow-xl">
+                    <i class="fas fa-circle-exclamation text-4xl text-rose-500"></i>
+                </div>
+                <h2 class="text-xl font-extrabold text-slate-900 mb-2 tracking-tight">Validation Failed</h2>
+                <p class="text-slate-500 text-xs mb-6 px-4 leading-relaxed">Network timeout or invalid UTR signature registry. Check details and resubmit.</p>
+                <button onclick="location.reload()" class="w-full bg-slate-900 hover:bg-black text-white font-semibold py-3.5 px-4 rounded-xl transition duration-200 text-sm tracking-wide shadow-md">
+                    <i class="fas fa-rotate-left mr-1.5 opacity-80"></i> Restart Verification
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-analytics.js";
+        import { getFirestore, collection, addDoc, onSnapshot, doc, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyADQ5Z6DoFn24FQFkdPuSBLVvryxnFnJ_E",
+            authDomain: "paymentupi-b296e.firebaseapp.com",
+            projectId: "paymentupi-b296e",
+            storageBucket: "paymentupi-b296e.firebasestorage.app",
+            messagingSenderId: "771713136159",
+            appId: "1:771713136159:web:4f7e6cdc4d4139c564872a",
+            measurementId: "G-627F28W2HT"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+        const db = getFirestore(app);
+
+        let timerInterval;
+        let unsubscribeFirestore = null;
+
+        // QR CODE DOWNLOAD IMAGE FUNCTION
+        document.getElementById('downloadQrBtn').addEventListener('click', async () => {
+            const qrImgSrc = document.getElementById('qrCodeImg').src;
+            try {
+                const response = await fetch(qrImgSrc);
+                const blob = await response.blob();
+                const blobUrl = URL.createObjectURL(blob);
+                
+                const link = document.createElement('a');
+                link.href = blobUrl;
+                link.download = 'Paytm_Payment_QR.png';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                URL.revokeObjectURL(blobUrl);
+            } catch (error) {
+                // Fallback mechanism in case of strict CORS cross-origin boundaries
+                window.open(qrImgSrc, '_blank');
+            }
+        });
+
+        window.showScreen = function(screenId) {
+            document.getElementById('paymentScreen').style.display = 'none';
+            const target = document.getElementById(screenId);
+            target.classList.remove('hidden');
+            target.classList.add('flex'); 
+        };
+
+        document.getElementById('submitBtn').addEventListener('click', async () => {
+            const utr = document.getElementById('utrInput').value.trim();
+            if(utr === "" || utr.length < 8) {
+                alert("Please enter a valid Transaction UTR / Ref Number.");
+                return;
+            }
+
+            const btn = document.getElementById('submitBtn');
+            btn.innerHTML = "<i class='fas fa-circle-notch fa-spin'></i> Cryptographic Audit...";
+            btn.disabled = true;
+
+            try {
+                const duplicateQuery = query(collection(db, "purchases"), where("utr", "==", utr));
+                const querySnapshot = await getDocs(duplicateQuery);
+                
+                if (!querySnapshot.empty) {
+                    alert("🚨 Security Block: This UTR has already been used to unlock a file! Duplicate requests are strictly prohibited.");
+                    btn.innerHTML = "<i class='fas fa-shield-check opacity-80'></i> Verify & Instant Unlock";
+                    btn.disabled = false;
+                    return;
+                }
+
+                btn.innerHTML = "<i class='fas fa-circle-notch fa-spin'></i> Opening Secure Handshake...";
+
+                const docRef = await addDoc(collection(db, "purchases"), {
+                    utr: utr,
+                    status: "pending",
+                    timestamp: new Date()
+                });
+
+                showScreen('processingScreen');
+                startTimer(120); 
+
+                unsubscribeFirestore = onSnapshot(doc(db, "purchases", docRef.id), (docSnap) => {
+                    if (docSnap.exists() && docSnap.data().status === "approved") {
+                        clearInterval(timerInterval);
+                        if (unsubscribeFirestore) unsubscribeFirestore();
+                        showSuccess();
+                    }
+                });
+
+            } catch (error) {
+                console.error("Database Error: ", error);
+                alert("Database Connection error. Please verify your Cloud Firestore Security Rules.");
+                btn.innerHTML = "<i class='fas fa-shield-check opacity-80'></i> Verify & Instant Unlock";
+                btn.disabled = false;
+            }
+        });
+
+        function startTimer(duration) {
+            let timer = duration, minutes, seconds;
+            timerInterval = setInterval(function () {
+                minutes = parseInt(timer / 60, 10);
+                seconds = parseInt(timer % 60, 10);
+
+                minutes = minutes < 10 ? "0" + minutes : minutes;
+                seconds = seconds < 10 ? "0" + seconds : seconds;
+
+                document.getElementById('timerText').textContent = minutes + ":" + seconds;
+
+                if (--timer < 0) {
+                    clearInterval(timerInterval);
+                    if (unsubscribeFirestore) unsubscribeFirestore(); 
+                    showFailed();
+                }
+            }, 1000);
+        }
+
+        function showSuccess() {
+            document.getElementById('loadingState').style.display = 'none';
+            document.getElementById('failedState').classList.add('hidden'); 
+            document.getElementById('successState').classList.remove('hidden');
+        }
+
+        function showFailed() {
+            document.getElementById('loadingState').style.display = 'none';
+            document.getElementById('successState').classList.add('hidden'); 
+            document.getElementById('failedState').classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>
                 <button id="submitBtn" class="w-full glow-button text-white font-semibold py-3.5 px-4 rounded-xl transition duration-300 flex items-center justify-center gap-2 shadow-lg text-sm tracking-wide">
                     <i class="fas fa-shield-check opacity-80"></i> Verify & Instant Unlock
                 </button>
